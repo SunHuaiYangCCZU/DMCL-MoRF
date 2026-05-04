@@ -4,8 +4,6 @@ import pandas as pd
 import json
 import numpy as np
 
-fasta_path = "/home/ys/sunhuaiyang2/3/data/classification_train.fasta"
-af_out_dir = Path("/home/ys/sunhuaiyang2/3/feature/alphafold2")
 
 rows = []
 
