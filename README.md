@@ -20,13 +20,13 @@ Molecular Recognition Features (MoRFs) play a critical role in protein–protein
 - transformers == 4.49.0
 
 # Description
-The proposed DeepDPM method is implemented in Python based on the PyTorch framework for predicting molecular recognition features (MoRFs) in proteins.  
-DeepDPM adopts a dual-branch network architecture and introduces a Bi-directional Local Cross Attention (BiLCrossAttention) module, which effectively fuses multi-source features and thereby significantly improves the accuracy of MoRF prediction.
+The proposed DMCL-MoRF method is implemented in Python based on the PyTorch framework for predicting molecular recognition features (MoRFs) in proteins.  
+DMCL-MoRF adopts a dual-branch network architecture and introduces a Bi-directional Local Cross Attention (BiLCrossAttention) module, which effectively fuses multi-source features and thereby significantly improves the accuracy of MoRF prediction.
 
 # Datasets
 DMCL-MoRF provides several pre-split datasets in FASTA format for model training and evaluation, including:
 - `Train.fasta`:  
-  The main training set of DeepDPM, containing protein sequences used for model learning.
+  The main training set of DMCL-MoRF, containing protein sequences used for model learning.
 - `Training421.fasta`:  
   The classical TRAINING421 dataset, consisting of 421 protein sequences. It is one of the commonly used benchmark training sets in the MoRF prediction field.
 - `Test1.fasta` and `Test2.fasta`:  
@@ -34,8 +34,8 @@ DMCL-MoRF provides several pre-split datasets in FASTA format for model training
 - `Test 419.fasta`:  
   The classical TEST419 dataset with 419 protein sequences, widely used for performance comparison in previous MoRF prediction methods. It serves as an important benchmark test set in this work.
 - `Test 45.fasta` and `test49.fasta`:  
-  Two additional independent test sets containing 45 and 49 protein sequences, respectively, which can be used to further verify the robustness of DeepDPM on diverse independent data.
-All of the above are protein-sequence-level datasets used for training and testing DeepDPM on the MoRF prediction task.
+  Two additional independent test sets containing 45 and 49 protein sequences, respectively, which can be used to further verify the robustness of DMCL-MoRF on diverse independent data.
+All of the above are protein-sequence-level datasets used for training and testing DMCL-MoRF on the MoRF prediction task.
 
 # Feature
 The `Extract_features` module contains two feature extraction scripts. By simply providing the path to the dataset, users can generate both ESM-2 and Prot-T5 features. All features generated in this study are stored in the `Feature` directory.
