@@ -41,7 +41,7 @@ All of the above are protein-sequence-level datasets used for training and testi
 The `Extract_features` module contains two feature extraction scripts. By simply providing the path to the dataset, users can generate both ESM-2 and Prot-T5 features. All features generated in this study are stored in the `Feature` directory.
 
 # Model
-The model-related code is stored in the `model` directory, which contains three scripts corresponding to the first branch, the second branch, and the fusion module, respectively. The trained models are saved in the `save_model` directory.
+The model-related code is stored in the `model` directory, which contains three scripts corresponding to the sequence branch, the structure branch, and the fusion module, respectively. The trained models are saved in the `save_model` directory.
 
 # Test
 The testing script is located in Test.py. Before use, you need to modify the model path in the script to point to the directory where the trained models are saved (save_model).
