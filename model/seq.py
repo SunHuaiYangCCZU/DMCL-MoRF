@@ -68,42 +68,97 @@ class Transformer(nn.Module):
             x = layer(x, k, v)
         return x
 
-
-# ---------------------------特征融合模块---------------------------------
-#
+# ---------------------------特征融合模块：V3 互补门控 + 残差增强---------------------------------
 class FeatureFusion3D(nn.Module):
-    def __init__(self, channels):
+    def __init__(self, channels, dropout=0.1):
         super().__init__()
 
-        # 关系建模卷积（核心创新点）
+        # 1. 关系建模卷积：根据 |x1 - y1| 生成门控
         self.rel_conv = nn.Conv1d(
-            channels, channels,
+            channels,
+            channels,
             kernel_size=3,
             padding=1,
-            bias=False
+            bias=True
         )
 
+        # 2. 残差融合分支：保留两路 PLM 的原始融合信息
+        self.res_conv = nn.Conv1d(
+            channels * 2,
+            channels,
+            kernel_size=1,
+            bias=True
+        )
+
+        # 3. 稳定训练
+        self.norm = nn.BatchNorm1d(channels)
+        self.dropout = nn.Dropout(dropout)
         self.act = nn.Sigmoid()
 
     def forward(self, x1, y1):
         """
         x1, y1: [B, C, L]
+        return:
+            x1_g: [B, C, L]
+            y1_g: [B, C, L]
+            fused: [B, C, L]
         """
 
-        # 1. 构造关系特征
-        rel = torch.abs(x1 - y1)          # |E − T| → [B, C, L]
+        # 1. 构造差异关系特征
+        rel = torch.abs(x1 - y1)  # [B, C, L]
 
-        # 2. 关系驱动门控
+        # 2. 生成互补门控
         gate = self.act(self.rel_conv(rel))  # [B, C, L]
 
-        # 3. 对两个特征进行一致调制
+        # 3. 互补门控融合
         x1_g = x1 * gate
-        y1_g = y1 * gate
+        y1_g = y1 * (1.0 - gate)
+        gated_fused = x1_g + y1_g
 
-        # 4. 融合
-        fused = x1_g + y1_g
+        # 4. 残差融合，防止门控早期不稳定导致信息丢失
+        residual = self.res_conv(torch.cat([x1, y1], dim=1))  # [B, C, L]
+
+        # 5. 融合 + 归一化
+        fused = gated_fused + residual
+        fused = self.norm(fused)
+        fused = self.dropout(fused)
 
         return x1_g, y1_g, fused
+# # ---------------------------特征融合模块---------------------------------
+# #
+# class FeatureFusion3D(nn.Module):
+#     def __init__(self, channels):
+#         super().__init__()
+#
+#         # 关系建模卷积（核心创新点）
+#         self.rel_conv = nn.Conv1d(
+#             channels, channels,
+#             kernel_size=3,
+#             padding=1,
+#             bias=False
+#         )
+#
+#         self.act = nn.Sigmoid()
+#
+#     def forward(self, x1, y1):
+#         """
+#         x1, y1: [B, C, L]
+#         """
+#
+#         # 1. 构造关系特征
+#         rel = torch.abs(x1 - y1)          # |E − T| → [B, C, L]
+#
+#         # 2. 关系驱动门控
+#         gate = self.act(self.rel_conv(rel))  # [B, C, L]
+#
+#         # 3. 对两个特征进行一致调制
+#         x1_g = x1 * gate
+#         y1_g = y1 * gate
+#
+#         # 4. 融合
+#         fused = x1_g + y1_g
+#
+#         return x1_g, y1_g, fused
 
 
 class DimAdjust3D(nn.Module):
