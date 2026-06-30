@@ -3,7 +3,6 @@
 A Contrastive Learning–Based Dual-Modal Sequence–Structure Fusion Framework for MoRF Prediction
 
 Identifying Molecular Recognition Features (MoRFs) within intrinsically disordered proteins is important for understanding protein interaction networks, but accurate residue-level MoRF prediction remains challenging because MoRFs are short, sparse, and closely related to disorder-to-order binding transitions. DMCL-MoRF is a dual-modal deep learning framework that integrates protein sequence representations and structure-derived topology for MoRF prediction.
-
 DMCL-MoRF uses ProtT5 and ESM-2 embeddings to capture complementary residue-level sequence semantics. To adaptively integrate these two pretrained protein language model representations, the framework introduces a Discrepancy-driven Convolutional Gated Fusion (DCGF) module, which uses local representation discrepancies as gating cues to suppress redundant or conflicting information. In parallel, AlphaFold2-predicted structures are converted into residue-level geometric graphs, and an edge-aware graph neural network is used to encode spatial topology and distance-dependent residue interactions. Finally, fragment-level cross-modal contrastive learning is introduced to align sequence and structure representations in a shared latent space, improving multimodal consistency and robustness under class-imbalanced conditions.
 
 <img width="554" height="373" alt="image" src="https://github.com/user-attachments/assets/a45ded2f-35e3-41c7-95a7-8d7a6062aecc" />
