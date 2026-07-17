@@ -28,15 +28,6 @@ DMCL-MoRF is implemented in Python based on the PyTorch framework for residue-le
 
 DMCL-MoRF provides several datasets in FASTA format for model training and evaluation, including:
 
- `Train.fasta`:
-  The main training set used for model learning in DMCL-MoRF.
-
- `Test1.fasta`:
-  The held-out test set constructed from the integrated benchmark dataset. It is used to evaluate the residue-level prediction performance of DMCL-MoRF under the main experimental setting.
-
- `Test2.fasta`:
-  An independent test set reconstructed from the previously reported Test49 dataset according to the published UniProt accession numbers. It is used to further evaluate the generalization ability of DMCL-MoRF.
-
  `Training421.fasta`:
   The classical Training421 dataset, consisting of 421 protein sequences. It is one of the public benchmark datasets used in MoRF prediction studies.
 
